@@ -7,11 +7,8 @@ const quotes = [
 const quote = document.getElementById('quote');
 const btn = document.getElementById('gen-btn');
 
-let index = 0;
-btn.addEventListener('click', () => {
-  quote.textContent = quotes[index];
-  index++;
-  if (index === quotes.length) {
-    index = 0;
-  }
-});
+function generateRandomQuote() {
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  quote.textContent = quotes[randomIndex];
+}
+btn.addEventListener('click', generateRandomQuote);
