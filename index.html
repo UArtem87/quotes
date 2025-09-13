@@ -7,10 +7,17 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Random quotes</h1>
-      <p id="quote">Click button to generate a random quote</p>
-      <button id="gen-btn">Generate Quote</button>
+    <div class="container dark-theme" id="container">
+      <div class="theme">
+        <div class="theme__color" id="theme">
+          <div class="theme__color--pointer" id="pointer"></div>
+        </div>
+      </div>
+      <div class="main">
+        <h1>Random quotes</h1>
+        <p id="quote">Click button to generate a random quote</p>
+        <button id="gen-btn">Generate Quote</button>
+      </div>
     </div>
     <script src="java.js"></script>
   </body>
