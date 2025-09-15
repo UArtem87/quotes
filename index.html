@@ -16,9 +16,16 @@
       <div class="main">
         <h1>Random quotes</h1>
         <p id="quote">Click button to generate a random quote</p>
-        <button id="gen-btn">Generate Quote</button>
+        <div class="btn-container">
+          <div class="btn-block">
+            <button id="gen-btn" class="btn">Generate Quote</button>
+            <span id="toggle-favorite" class="star"></span>
+          </div>
+          <span id="added" class="added"></span>
+        </div>
       </div>
     </div>
+    <div class="favorite-container" id="favorite-container"></div>
     <script src="java.js" type="module"></script>
   </body>
 </html>

@@ -6,14 +6,14 @@ body.clicked {
   background-color: gainsboro;
   width: 500px;
   margin: 20px auto;
-  border: 1px solid black;
+  border: 1px solid rgb(0, 0, 0);
   border-radius: 20px;
   padding: 10px;
 }
 
 .container.clicked {
-  color: #fff;
-  background-color: black;
+  color: #cacaca;
+  background-color: rgb(83, 83, 73);
   border-color: #fff;
 }
 
@@ -36,7 +36,7 @@ body.clicked {
 
 .theme__color.clicked {
   border: 2px solid white;
-  background-color: black;
+  background-color: rgb(83, 83, 73);
 }
 
 .theme__color--pointer {
@@ -52,7 +52,7 @@ body.clicked {
   box-sizing: border-box;
   transform: translateX(16px);
   background-color: rgb(15, 233, 62);
-  border: 2px solid #fff;
+  border: 1px solid #fff;
 }
 
 .main {
@@ -66,17 +66,83 @@ p {
   height: 100px;
 }
 
-button {
-  border-radius: 15px;
-  border: none;
-  background-color: #fff;
-  height: 30px;
-  color: rgb(30, 218, 30);
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-button:hover {
-  color: white;
-  border: 2px solid white;
-  background-color: blue;
+.btn-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  display: inline-block;
+  border: 1px solid rgb(161, 160, 160);
+  border-radius: 10px;
+  height: 27px;
+  padding: 0 10px;
+  background-color: #faf7f7;
+  color: #555555;
+}
+.btn:hover {
+  background-color: #c7c6c6;
+  color: #353535;
+}
+
+.btn.clicked {
+  background-color: rgb(131, 131, 122);
+  color: rgb(29, 29, 28);
+  border: 1px solid black;
+}
+
+.btn.clicked:hover {
+  background-color: rgba(129, 122, 112, 0.658);
+  border: 1px solid #bebebc;
+  color: #000000;
+}
+
+.star {
+  display: inline-block;
+  background-image: url(./images/3.png);
+  height: 18px;
+  width: 18px;
+  background-size: cover;
   cursor: pointer;
+}
+
+.star:hover {
+  background-image: url(./images/1.png);
+}
+
+.added {
+  height: 10px;
+}
+
+.favorite-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.favorite-card {
+  background-color: gainsboro;
+  text-align: center;
+  width: 250px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.favorite-card.clicked {
+  color: #cacaca;
+  text-align: center;
+  width: 250px;
+  background-color: rgb(83, 83, 73);
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 10px;
 }
