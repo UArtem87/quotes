@@ -27,6 +27,10 @@ pointer.addEventListener('click', () => {
   });
 });
 
+function toggleStar() {
+  toggleFavorite.classList.toggle('filled', currentQuote.isFavorite);
+}
+
 //  Генерація випадкової цитати
 function generateRandomQuote() {
   addedToFavorite.textContent = '';
@@ -40,21 +44,39 @@ function generateRandomQuote() {
     currentQuote.isFavorite = false;
   }
 
-  toggleFavorite.style.backgroundImage = currentQuote.isFavorite
-    ? 'url(./images/1.png)'
-    : 'url(./images/3.png)';
-
-  console.log(quotes);
+  toggleFavorite.style.display = 'inline-block';
+  toggleStar();
 }
 
 btn.addEventListener('click', generateRandomQuote);
 
+//  Створення favorite card
+function showFavoriteCard() {
+  const favoriteCard = document.createElement('div');
+  if (container.classList.contains('clicked')) {
+    favoriteCard.classList.add('favorite-card', 'clicked');
+  } else {
+    favoriteCard.classList.add('favorite-card');
+  }
+  const { quote, author } = currentQuote;
+  favoriteCard.innerHTML = `<em>"${quote}"</em><br>
+  ${author}<span id="star-${currentIndex}" class="favorite-star"></span>`;
+  favoriteCard.dataset.quoteIndex = currentIndex;
+  favoriteContainer.append(favoriteCard);
+}
+
+//  Видалення карточки
+function hideFavoriteCard() {
+  const favoriteCards = document.querySelectorAll('.favorite-card');
+  favoriteCards.forEach((card) => {
+    if (parseInt(card.dataset.quoteIndex) === currentIndex) {
+      card.remove();
+    }
+  });
+}
+
 //  Зміна властивості isFavorite і зміна повідомлення
 function toggleFavoriteQuote() {
-  if (currentQuote === undefined) {
-    addedToFavorite.textContent = 'Please generate quote!';
-    return;
-  }
   currentQuote.isFavorite = !currentQuote.isFavorite;
 
   addedToFavorite.textContent = currentQuote.isFavorite
@@ -62,27 +84,26 @@ function toggleFavoriteQuote() {
     : 'Remove from favorities';
 
   if (currentQuote.isFavorite) {
-    const favoriteCard = document.createElement('div');
-    if (container.classList.contains('clicked')) {
-      favoriteCard.classList.add('favorite-card', 'clicked');
-    } else {
-      favoriteCard.classList.add('favorite-card');
-    }
-    const { quote, author } = currentQuote;
-    favoriteCard.innerHTML = `<em>"${quote}"</em><br>(${author})`;
-    favoriteContainer.append(favoriteCard);
+    showFavoriteCard();
   } else {
-    const favoriteCards = document.querySelectorAll('.favorite-card');
-    favoriteCards.forEach((card) => {
-      if (card.textContent.includes(quoteRan.textContent)) {
-        card.remove();
-      }
-    });
+    hideFavoriteCard();
   }
 
-  toggleFavorite.style.backgroundImage = currentQuote.isFavorite
-    ? 'url(./images/1.png)'
-    : 'url(./images/3.png)';
+  toggleStar();
 }
 
 toggleFavorite.addEventListener('click', toggleFavoriteQuote);
+
+favoriteContainer.addEventListener('click', (event) => {
+  const clickEl = event.target;
+  if (clickEl.classList.contains('favorite-star')) {
+    const favoriteCard = clickEl.closest('.favorite-card');
+    const indexOfRemove = favoriteCard.dataset.quoteIndex;
+
+    if (quotes[indexOfRemove]) {
+      quotes[indexOfRemove].isFavorite = false;
+      addedToFavorite.textContent = 'Remove from favorities';
+      favoriteCard.remove();
+    }
+  }
+});
