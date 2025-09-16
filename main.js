@@ -1,4 +1,9 @@
-import quotes from './quotes.js';
+import quotes from './src/quotes.js';
+import {
+  hideFavoriteCard,
+  showFavoriteCard,
+  toggleStar,
+} from './src/hadler.js';
 
 const container = document.getElementById('container');
 const pointer = document.getElementById('pointer');
@@ -13,7 +18,7 @@ const favoriteContainer = document.getElementById('favorite-container');
 let currentIndex;
 let currentQuote;
 
-//  Зміна день-ніч
+//  Зміна день-ніч лістнер
 pointer.addEventListener('click', () => {
   pointer.classList.toggle('clicked');
   container.classList.toggle('clicked');
@@ -26,10 +31,6 @@ pointer.addEventListener('click', () => {
     card.classList.toggle('clicked');
   });
 });
-
-function toggleStar() {
-  toggleFavorite.classList.toggle('filled', currentQuote.isFavorite);
-}
 
 //  Генерація випадкової цитати
 function generateRandomQuote() {
@@ -45,34 +46,7 @@ function generateRandomQuote() {
   }
 
   toggleFavorite.style.display = 'inline-block';
-  toggleStar();
-}
-
-btn.addEventListener('click', generateRandomQuote);
-
-//  Створення favorite card
-function showFavoriteCard() {
-  const favoriteCard = document.createElement('div');
-  if (container.classList.contains('clicked')) {
-    favoriteCard.classList.add('favorite-card', 'clicked');
-  } else {
-    favoriteCard.classList.add('favorite-card');
-  }
-  const { quote, author } = currentQuote;
-  favoriteCard.innerHTML = `<em>"${quote}"</em><br>
-  ${author}<span id="star-${currentIndex}" class="favorite-star"></span>`;
-  favoriteCard.dataset.quoteIndex = currentIndex;
-  favoriteContainer.append(favoriteCard);
-}
-
-//  Видалення карточки
-function hideFavoriteCard() {
-  const favoriteCards = document.querySelectorAll('.favorite-card');
-  favoriteCards.forEach((card) => {
-    if (parseInt(card.dataset.quoteIndex) === currentIndex) {
-      card.remove();
-    }
-  });
+  toggleStar(toggleFavorite, currentQuote);
 }
 
 //  Зміна властивості isFavorite і зміна повідомлення
@@ -84,16 +58,18 @@ function toggleFavoriteQuote() {
     : 'Remove from favorities';
 
   if (currentQuote.isFavorite) {
-    showFavoriteCard();
+    showFavoriteCard(container, favoriteContainer, currentQuote, currentIndex);
   } else {
     hideFavoriteCard();
   }
-
-  toggleStar();
+  toggleStar(toggleFavorite, currentQuote);
 }
 
+// Лістнери
+btn.addEventListener('click', generateRandomQuote);
 toggleFavorite.addEventListener('click', toggleFavoriteQuote);
 
+// Лістнер для favoriteCard
 favoriteContainer.addEventListener('click', (event) => {
   const clickEl = event.target;
   if (clickEl.classList.contains('favorite-star')) {
@@ -103,6 +79,7 @@ favoriteContainer.addEventListener('click', (event) => {
     if (quotes[indexOfRemove]) {
       quotes[indexOfRemove].isFavorite = false;
       addedToFavorite.textContent = 'Remove from favorities';
+      toggleStar(toggleFavorite, currentQuote);
       favoriteCard.remove();
     }
   }
