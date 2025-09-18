@@ -19,13 +19,13 @@ function showFavoriteCard(
 }
 
 //  Видалення карточки
-function hideFavoriteCard() {
-  const favoriteCards = document.querySelectorAll('.favorite-card');
-  favoriteCards.forEach((card) => {
-    if (parseInt(card.dataset.quoteIndex) === currentIndex) {
-      card.remove();
-    }
-  });
+function hideFavoriteCard(currentIndex) {
+  const favoriteCard = document.querySelector(
+    `.favorite-card[data-quote-index='${currentIndex}']`
+  );
+  if (favoriteCard) {
+    favoriteCard.remove();
+  }
 }
 
 function toggleStar(toggleFavorite, currentQuote) {

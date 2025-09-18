@@ -19,7 +19,7 @@ let currentIndex;
 let currentQuote;
 
 //  Зміна день-ніч лістнер
-pointer.addEventListener('click', () => {
+theme.addEventListener('click', () => {
   pointer.classList.toggle('clicked');
   container.classList.toggle('clicked');
   body.classList.toggle('clicked');
@@ -60,7 +60,7 @@ function toggleFavoriteQuote() {
   if (currentQuote.isFavorite) {
     showFavoriteCard(container, favoriteContainer, currentQuote, currentIndex);
   } else {
-    hideFavoriteCard();
+    hideFavoriteCard(currentIndex);
   }
   toggleStar(toggleFavorite, currentQuote);
 }
