@@ -1,86 +1,66 @@
 import quotes from './src/quotes.js';
+import { localStorageArray } from './src/hadler.js';
+import { loadLocalStorage, saveLocalStorage } from './src/localStorage.js';
 import {
   hideFavoriteCard,
   showFavoriteCard,
   toggleStar,
 } from './src/hadler.js';
 
-const container = document.getElementById('container');
-const pointer = document.getElementById('pointer');
-const quoteRan = document.getElementById('quote');
-const btn = document.getElementById('gen-btn');
+// #region Elements
 const body = document.body;
+const container = document.getElementById('container');
 const theme = document.getElementById('theme');
+const pointer = document.getElementById('pointer');
+const btn = document.getElementById('gen-btn');
+const quoteRan = document.getElementById('quote');
 const toggleFavorite = document.getElementById('toggle-favorite');
-const addedToFavorite = document.getElementById('added');
-const favoriteContainer = document.getElementById('favorite-container');
+// const addedToFavorite = document.getElementById('added');
+// const favoriteContainer = document.getElementById('favorite-container');
+// const favoriteCards = document.querySelectorAll('.favorite-card');
 
-let currentIndex;
-let currentQuote;
+const elementArray = [body, container, theme, pointer, btn, quoteRan];
+// #endregion
 
-//  Зміна день-ніч лістнер
+// #region Зміна день-ніч лістнер
 theme.addEventListener('click', () => {
-  pointer.classList.toggle('clicked');
-  container.classList.toggle('clicked');
-  body.classList.toggle('clicked');
-  theme.classList.toggle('clicked');
-  btn.classList.toggle('clicked');
-  toggleFavorite.classList.toggle('clicked');
-  const favoriteCards = document.querySelectorAll('.favorite-card');
-  favoriteCards.forEach((card) => {
-    card.classList.toggle('clicked');
+  elementArray.forEach((element) => {
+    element.classList.toggle('clicked');
   });
+  // favoriteCards.forEach((card) => {
+  //   card.classList.toggle('clicked');
+  // });
 });
+// #endregion
 
-//  Генерація випадкової цитати
-function generateRandomQuote() {
-  addedToFavorite.textContent = '';
-  currentIndex = Math.floor(Math.random() * quotes.length);
-  currentQuote = quotes[currentIndex];
-  const { quote, author } = currentQuote;
-  quoteRan.innerHTML = `<em>"${quote}"</em><br>(${author})`;
+//  Генерація індексу
+function generateRandomIndex() {
+  return Math.floor(Math.random() * quotes.length);
+}
 
-  //  Присвоєння значення властивості isFavorite
+//  Відображення зірочки
+function showStar() {
+  toggleFavorite.style.display = 'inline-block';
+}
+
+//  Присвоєння властивості isFavorite
+function quoteIsFavorite(currentQuote) {
   if (currentQuote.isFavorite === undefined) {
     currentQuote.isFavorite = false;
   }
-
-  toggleFavorite.style.display = 'inline-block';
-  toggleStar(toggleFavorite, currentQuote);
 }
 
-//  Зміна властивості isFavorite і зміна повідомлення
-function toggleFavoriteQuote() {
-  currentQuote.isFavorite = !currentQuote.isFavorite;
-
-  addedToFavorite.textContent = currentQuote.isFavorite
-    ? 'Quote added!'
-    : 'Remove from favorities';
-
-  if (currentQuote.isFavorite) {
-    showFavoriteCard(container, favoriteContainer, currentQuote, currentIndex);
-  } else {
-    hideFavoriteCard(currentIndex);
-  }
-  toggleStar(toggleFavorite, currentQuote);
+//  Генерація цитати
+function generateRandomQuote(quotes) {
+  const currentIndex = generateRandomIndex();
+  const currentQuote = quotes[currentIndex];
+  const { quote, author } = currentQuote;
+  quoteRan.innerHTML = `<em>"${quote}"</em><br>(${author})`;
+  quoteIsFavorite(currentQuote);
+  showStar();
+  console.log(quotes);
 }
 
-// Лістнери
-btn.addEventListener('click', generateRandomQuote);
-toggleFavorite.addEventListener('click', toggleFavoriteQuote);
-
-// Лістнер для favoriteCard
-favoriteContainer.addEventListener('click', (event) => {
-  const clickEl = event.target;
-  if (clickEl.classList.contains('favorite-star')) {
-    const favoriteCard = clickEl.closest('.favorite-card');
-    const indexOfRemove = favoriteCard.dataset.quoteIndex;
-
-    if (quotes[indexOfRemove]) {
-      quotes[indexOfRemove].isFavorite = false;
-      addedToFavorite.textContent = 'Remove from favorities';
-      toggleStar(toggleFavorite, currentQuote);
-      favoriteCard.remove();
-    }
-  }
+btn.addEventListener('click', () => {
+  generateRandomQuote(quotes);
 });

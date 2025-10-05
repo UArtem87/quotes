@@ -61,7 +61,7 @@ body.clicked {
   align-items: center;
 }
 
-p {
+#quote {
   text-align: center;
   height: 100px;
 }
