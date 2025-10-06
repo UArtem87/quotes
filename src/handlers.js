@@ -1,3 +1,14 @@
+import { showStar, quoteIsFavorite } from './utils.js';
+
+//  Відображення цитати
+const showQuote = (quote, quoteRan, btn) => {
+  quoteIsFavorite(quote);
+  toggleFavoriteImage(quote, btn);
+  const { text, author } = quote;
+  quoteRan.innerHTML = `<em>"${text}"</em><br>(${author})`;
+  showStar(btn);
+};
+
 //  Додавання карточки з обраною цитатою
 const addFavoriteCard = (quotes, index, body, container) => {
   if (quotes[index].isFavorite === true) {
@@ -34,4 +45,4 @@ const toggleFavoriteImage = (quote, btn) => {
   btn.classList.add(classToAdd);
 };
 
-export { addFavoriteCard, removeFavoriteCard, toggleFavoriteImage };
+export { addFavoriteCard, removeFavoriteCard, toggleFavoriteImage, showQuote };
