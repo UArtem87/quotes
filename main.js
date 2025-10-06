@@ -16,8 +16,6 @@ const quoteRan = document.getElementById('quote');
 const btn = document.getElementById('gen-btn');
 const toggleFavoriteBtn = document.getElementById('toggle-favorite');
 const favoriteContainer = document.getElementById('favorite-container');
-// const addedToFavorite = document.getElementById('added');
-// const favoriteCards = document.querySelectorAll('.favorite-card');
 
 const elementArray = [body, container, theme, pointer, btn, quoteRan];
 // #endregion
@@ -27,9 +25,11 @@ theme.addEventListener('click', () => {
   elementArray.forEach((element) => {
     element.classList.toggle('clicked');
   });
-  // favoriteCards.forEach((card) => {
-  //   card.classList.toggle('clicked');
-  // });
+
+  const favoriteCards = document.querySelectorAll('.favorite-card');
+  favoriteCards.forEach((card) => {
+    card.classList.toggle('clicked');
+  });
 });
 // #endregion
 
@@ -89,10 +89,14 @@ const addFavoriteCard = () => {
     const { quote, author } = quotes[currentIndex];
     favoriteCard.innerHTML = `<em>"${quote}"</em><br>(${author})`;
     favoriteCard.setAttribute('data-id', currentIndex);
+    if (body.classList.contains('clicked')) {
+      favoriteCard.classList.add('clicked');
+    }
     favoriteContainer.append(favoriteCard);
   }
 };
 
+//  Видаляємо карточку з обраних
 const removeFavoriteCard = () => {
   if (quotes[currentIndex].isFavorite === false) {
     const favoriteCards = document.querySelectorAll('.favorite-card');
