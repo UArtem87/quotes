@@ -1,11 +1,10 @@
 import quotes from './src/quotes.js';
-import { localStorageArray } from './src/hadler.js';
-import { loadLocalStorage, saveLocalStorage } from './src/localStorage.js';
 import {
-  hideFavoriteCard,
-  showFavoriteCard,
-  toggleStar,
-} from './src/hadler.js';
+  addFavoriteCard,
+  removeFavoriteCard,
+  toggleFavoriteImage,
+} from './src/handlers.js';
+import { generateRandomIndex, showStar, quoteIsFavorite } from './src/utils.js';
 
 // #region Elements
 const body = document.body;
@@ -16,9 +15,9 @@ const quoteRan = document.getElementById('quote');
 const btn = document.getElementById('gen-btn');
 const toggleFavoriteBtn = document.getElementById('toggle-favorite');
 const favoriteContainer = document.getElementById('favorite-container');
+// #endregion
 
 const elementArray = [body, container, theme, pointer, btn, quoteRan];
-// #endregion
 
 // #region Зміна день-ніч лістнер
 theme.addEventListener('click', () => {
@@ -37,38 +36,13 @@ let currentIndex;
 
 //  Генерація цитати
 function generateRandomQuote() {
-  currentIndex = generateRandomIndex();
+  currentIndex = generateRandomIndex(quotes);
   const currentQuote = quotes[currentIndex];
   const { quote, author } = currentQuote;
   quoteRan.innerHTML = `<em>"${quote}"</em><br>(${author})`;
   quoteIsFavorite(currentQuote);
-  showStar();
+  showStar(quotes, currentIndex, toggleFavoriteBtn);
 }
-
-//  Генерація індексу
-const generateRandomIndex = () => Math.floor(Math.random() * quotes.length);
-
-//  Присвоєння властивості isFavorite
-function quoteIsFavorite(currentQuote) {
-  if (currentQuote.isFavorite === undefined) {
-    currentQuote.isFavorite = false;
-  }
-}
-
-//  Відображення зірочки
-const showStar = () => {
-  toggleFavoriteBtn.classList.add('star');
-  toggleFavoriteImage();
-};
-
-//  Вибір картинки
-const toggleFavoriteImage = () => {
-  const currentQuote = quotes[currentIndex];
-  const isFav = currentQuote.isFavorite;
-  toggleFavoriteBtn.classList.remove('favorite', 'unfavorite');
-  const classToAdd = isFav ? 'favorite' : 'unfavorite';
-  toggleFavoriteBtn.classList.add(classToAdd);
-};
 
 btn.addEventListener('click', generateRandomQuote);
 
@@ -76,37 +50,10 @@ btn.addEventListener('click', generateRandomQuote);
 const toggleFavorite = () => {
   const currentQuote = quotes[currentIndex];
   currentQuote.isFavorite = currentQuote.isFavorite ? false : true;
-  toggleFavoriteImage();
-  currentQuote.isFavorite ? addFavoriteCard() : removeFavoriteCard();
-  console.log(quotes);
-};
-
-//  Додавання карточки з обраною цитатою
-const addFavoriteCard = () => {
-  if (quotes[currentIndex].isFavorite === true) {
-    const favoriteCard = document.createElement('div');
-    favoriteCard.classList.add('favorite-card');
-    const { quote, author } = quotes[currentIndex];
-    favoriteCard.innerHTML = `<em>"${quote}"</em><br>(${author})`;
-    favoriteCard.setAttribute('data-id', currentIndex);
-    if (body.classList.contains('clicked')) {
-      favoriteCard.classList.add('clicked');
-    }
-    favoriteContainer.append(favoriteCard);
-  }
-};
-
-//  Видаляємо карточку з обраних
-const removeFavoriteCard = () => {
-  if (quotes[currentIndex].isFavorite === false) {
-    const favoriteCards = document.querySelectorAll('.favorite-card');
-    favoriteCards.forEach((card) => {
-      const cardId = card.getAttribute('data-id');
-      if (+cardId === currentIndex) {
-        card.remove();
-      }
-    });
-  }
+  toggleFavoriteImage(quotes, currentIndex, toggleFavoriteBtn);
+  currentQuote.isFavorite
+    ? addFavoriteCard(quotes, currentIndex, body, favoriteContainer)
+    : removeFavoriteCard(quotes, currentIndex);
 };
 
 toggleFavoriteBtn.addEventListener('click', toggleFavorite);

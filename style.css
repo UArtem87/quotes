@@ -77,7 +77,6 @@ body.clicked {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 5px;
 }
 
 .btn {
@@ -120,17 +119,16 @@ body.clicked {
   /* transition: 0.2s; */
 }
 
+.star:hover {
+  cursor: default;
+}
+
 .star.unfavorite {
   background-image: url(./images/3.png);
 }
 
 .star.favorite {
   background-image: url(./images/1.png);
-}
-
-.added {
-  height: 10px;
-  margin-bottom: 3px;
 }
 
 .favorite-container {
