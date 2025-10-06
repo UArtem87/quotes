@@ -1,14 +1,7 @@
 import { toggleFavoriteImage } from './handlers.js';
 
 //  Генерація індексу
-const generateRandomIndex = (quotes) =>
-  Math.floor(Math.random() * quotes.length);
-
-//  Відображення зірочки
-const showStar = (quotes, currentIndex, toggleFavoriteBtn) => {
-  toggleFavoriteBtn.classList.add('star');
-  toggleFavoriteImage(quotes, currentIndex, toggleFavoriteBtn);
-};
+const generateRandomIndex = (maxInt) => Math.floor(Math.random() * maxInt);
 
 //  Присвоєння властивості isFavorite
 function quoteIsFavorite(currentQuote) {
@@ -16,5 +9,10 @@ function quoteIsFavorite(currentQuote) {
     currentQuote.isFavorite = false;
   }
 }
+
+//  Відображення зірочки
+const showStar = (btn) => {
+  btn.classList.add('star', 'unfavorite');
+};
 
 export { generateRandomIndex, showStar, quoteIsFavorite };

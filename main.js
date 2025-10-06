@@ -34,14 +34,20 @@ theme.addEventListener('click', () => {
 
 let currentIndex;
 
+//  Відображення цитати
+const showQuote = (quote) => {
+  quoteIsFavorite(quote);
+  toggleFavoriteImage(quote, toggleFavoriteBtn);
+  const { text, author } = quote;
+  quoteRan.innerHTML = `<em>"${text}"</em><br>(${author})`;
+  showStar(toggleFavoriteBtn);
+};
+
 //  Генерація цитати
 function generateRandomQuote() {
-  currentIndex = generateRandomIndex(quotes);
+  currentIndex = generateRandomIndex(quotes.length);
   const currentQuote = quotes[currentIndex];
-  const { quote, author } = currentQuote;
-  quoteRan.innerHTML = `<em>"${quote}"</em><br>(${author})`;
-  quoteIsFavorite(currentQuote);
-  showStar(quotes, currentIndex, toggleFavoriteBtn);
+  showQuote(currentQuote);
 }
 
 btn.addEventListener('click', generateRandomQuote);
@@ -50,7 +56,7 @@ btn.addEventListener('click', generateRandomQuote);
 const toggleFavorite = () => {
   const currentQuote = quotes[currentIndex];
   currentQuote.isFavorite = currentQuote.isFavorite ? false : true;
-  toggleFavoriteImage(quotes, currentIndex, toggleFavoriteBtn);
+  toggleFavoriteImage(currentQuote, toggleFavoriteBtn);
   currentQuote.isFavorite
     ? addFavoriteCard(quotes, currentIndex, body, favoriteContainer)
     : removeFavoriteCard(quotes, currentIndex);

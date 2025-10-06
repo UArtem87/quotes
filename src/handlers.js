@@ -3,8 +3,8 @@ const addFavoriteCard = (quotes, index, body, container) => {
   if (quotes[index].isFavorite === true) {
     const favoriteCard = document.createElement('div');
     favoriteCard.classList.add('favorite-card');
-    const { quote, author } = quotes[index];
-    favoriteCard.innerHTML = `<em>"${quote}"</em><br>(${author})`;
+    const { text, author } = quotes[index];
+    favoriteCard.innerHTML = `<em>"${text}"</em><br>(${author})`;
     favoriteCard.setAttribute('data-id', index);
     if (body.classList.contains('clicked')) {
       favoriteCard.classList.add('clicked');
@@ -27,9 +27,8 @@ const removeFavoriteCard = (quotes, index) => {
 };
 
 //  Вибір картинки
-const toggleFavoriteImage = (quotes, index, btn) => {
-  const currentQuote = quotes[index];
-  const isFav = currentQuote.isFavorite;
+const toggleFavoriteImage = (quote, btn) => {
+  const isFav = quote.isFavorite;
   btn.classList.remove('favorite', 'unfavorite');
   const classToAdd = isFav ? 'favorite' : 'unfavorite';
   btn.classList.add(classToAdd);
