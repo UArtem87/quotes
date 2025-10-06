@@ -64,6 +64,7 @@ body.clicked {
 #quote {
   text-align: center;
   height: 100px;
+  white-space: pre-line;
 }
 
 .btn-container {
@@ -93,6 +94,10 @@ body.clicked {
   color: #353535;
 }
 
+.btn:active {
+  transform: scale(0.95);
+}
+
 .btn.clicked {
   background-color: rgb(131, 131, 122);
   color: rgb(29, 29, 28);
@@ -106,9 +111,8 @@ body.clicked {
 }
 
 .star {
-  display: none;
+  display: inline-block;
   box-sizing: border-box;
-  background-image: url(./images/3.png);
   height: 20px;
   width: 20px;
   background-size: cover;
@@ -116,17 +120,12 @@ body.clicked {
   /* transition: 0.2s; */
 }
 
-.star.filled {
-  background-image: url(./images/1.png);
-}
-
-.star:hover {
-  background-image: url(./images/1.png);
-  /* transform: scale(1.2); */
-}
-
-.star.filled:hover {
+.star.unfavorite {
   background-image: url(./images/3.png);
+}
+
+.star.favorite {
+  background-image: url(./images/1.png);
 }
 
 .added {
@@ -160,7 +159,7 @@ body.clicked {
   padding: 10px;
 }
 
-.favorite-star {
+/* .favorite-star {
   display: inline-block;
   box-sizing: border-box;
   background-image: url(./images/1.png);
@@ -170,4 +169,4 @@ body.clicked {
   vertical-align: text-bottom;
   cursor: pointer;
   margin-left: 5px;
-}
+} */

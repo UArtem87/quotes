@@ -12,11 +12,11 @@ const body = document.body;
 const container = document.getElementById('container');
 const theme = document.getElementById('theme');
 const pointer = document.getElementById('pointer');
-const btn = document.getElementById('gen-btn');
 const quoteRan = document.getElementById('quote');
-const toggleFavorite = document.getElementById('toggle-favorite');
+const btn = document.getElementById('gen-btn');
+const toggleFavoriteBtn = document.getElementById('toggle-favorite');
+const favoriteContainer = document.getElementById('favorite-container');
 // const addedToFavorite = document.getElementById('added');
-// const favoriteContainer = document.getElementById('favorite-container');
 // const favoriteCards = document.querySelectorAll('.favorite-card');
 
 const elementArray = [body, container, theme, pointer, btn, quoteRan];
@@ -33,15 +33,20 @@ theme.addEventListener('click', () => {
 });
 // #endregion
 
-//  Генерація індексу
-function generateRandomIndex() {
-  return Math.floor(Math.random() * quotes.length);
+let currentIndex;
+
+//  Генерація цитати
+function generateRandomQuote() {
+  currentIndex = generateRandomIndex();
+  const currentQuote = quotes[currentIndex];
+  const { quote, author } = currentQuote;
+  quoteRan.innerHTML = `<em>"${quote}"</em><br>(${author})`;
+  quoteIsFavorite(currentQuote);
+  showStar();
 }
 
-//  Відображення зірочки
-function showStar() {
-  toggleFavorite.style.display = 'inline-block';
-}
+//  Генерація індексу
+const generateRandomIndex = () => Math.floor(Math.random() * quotes.length);
 
 //  Присвоєння властивості isFavorite
 function quoteIsFavorite(currentQuote) {
@@ -50,17 +55,54 @@ function quoteIsFavorite(currentQuote) {
   }
 }
 
-//  Генерація цитати
-function generateRandomQuote(quotes) {
-  const currentIndex = generateRandomIndex();
-  const currentQuote = quotes[currentIndex];
-  const { quote, author } = currentQuote;
-  quoteRan.innerHTML = `<em>"${quote}"</em><br>(${author})`;
-  quoteIsFavorite(currentQuote);
-  showStar();
-  console.log(quotes);
-}
+//  Відображення зірочки
+const showStar = () => {
+  toggleFavoriteBtn.classList.add('star');
+  toggleFavoriteImage();
+};
 
-btn.addEventListener('click', () => {
-  generateRandomQuote(quotes);
-});
+//  Вибір картинки
+const toggleFavoriteImage = () => {
+  const currentQuote = quotes[currentIndex];
+  const isFav = currentQuote.isFavorite;
+  toggleFavoriteBtn.classList.remove('favorite', 'unfavorite');
+  const classToAdd = isFav ? 'favorite' : 'unfavorite';
+  toggleFavoriteBtn.classList.add(classToAdd);
+};
+
+btn.addEventListener('click', generateRandomQuote);
+
+//  Робимо цитату isFavorite
+const toggleFavorite = () => {
+  const currentQuote = quotes[currentIndex];
+  currentQuote.isFavorite = currentQuote.isFavorite ? false : true;
+  toggleFavoriteImage();
+  currentQuote.isFavorite ? addFavoriteCard() : removeFavoriteCard();
+  console.log(quotes);
+};
+
+//  Додавання карточки з обраною цитатою
+const addFavoriteCard = () => {
+  if (quotes[currentIndex].isFavorite === true) {
+    const favoriteCard = document.createElement('div');
+    favoriteCard.classList.add('favorite-card');
+    const { quote, author } = quotes[currentIndex];
+    favoriteCard.innerHTML = `<em>"${quote}"</em><br>(${author})`;
+    favoriteCard.setAttribute('data-id', currentIndex);
+    favoriteContainer.append(favoriteCard);
+  }
+};
+
+const removeFavoriteCard = () => {
+  if (quotes[currentIndex].isFavorite === false) {
+    const favoriteCards = document.querySelectorAll('.favorite-card');
+    favoriteCards.forEach((card) => {
+      const cardId = card.getAttribute('data-id');
+      if (+cardId === currentIndex) {
+        card.remove();
+      }
+    });
+  }
+};
+
+toggleFavoriteBtn.addEventListener('click', toggleFavorite);
