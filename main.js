@@ -1,7 +1,7 @@
 import quotes from './src/quotes.js';
 import {
   addFavoriteCard,
-  removeFavoriteCard,
+  hideFavoriteCard,
   toggleFavoriteImage,
   showQuote,
 } from './src/handlers.js';
@@ -16,6 +16,7 @@ const quoteRan = document.getElementById('quote');
 const btn = document.getElementById('gen-btn');
 const toggleFavoriteBtn = document.getElementById('toggle-favorite');
 const favoriteContainer = document.getElementById('favorite-container');
+
 // #endregion
 
 // #region Зміна день-ніч лістнер
@@ -45,13 +46,21 @@ function generateRandomQuote() {
 btn.addEventListener('click', generateRandomQuote);
 
 //  Робимо цитату isFavorite
-const toggleFavorite = () => {
-  const currentQuote = quotes[currentIndex];
+const toggleFavorite = (index) => {
+  const currentQuote = quotes[index];
   currentQuote.isFavorite = currentQuote.isFavorite ? false : true;
   toggleFavoriteImage(currentQuote, toggleFavoriteBtn);
   currentQuote.isFavorite
-    ? addFavoriteCard(quotes, currentIndex, body, favoriteContainer)
-    : removeFavoriteCard(quotes, currentIndex);
+    ? addFavoriteCard(quotes, index, body, favoriteContainer)
+    : hideFavoriteCard(index);
 };
 
-toggleFavoriteBtn.addEventListener('click', toggleFavorite);
+toggleFavoriteBtn.addEventListener('click', () => toggleFavorite(currentIndex));
+
+favoriteContainer.addEventListener('click', (event) => {
+  const starElement = event.target.closest('.favorite-star');
+  if (starElement) {
+    const index = +starElement.dataset.id;
+    toggleFavorite(index);
+  }
+});

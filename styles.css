@@ -157,7 +157,7 @@ body.clicked {
   padding: 10px;
 }
 
-/* .favorite-star {
+.favorite-star {
   display: inline-block;
   box-sizing: border-box;
   background-image: url(./images/1.png);
@@ -167,4 +167,4 @@ body.clicked {
   vertical-align: text-bottom;
   cursor: pointer;
   margin-left: 5px;
-} */
+}

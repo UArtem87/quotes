@@ -1,5 +1,3 @@
-import { toggleFavoriteImage } from './handlers.js';
-
 //  Генерація індексу
 const generateRandomIndex = (maxInt) => Math.floor(Math.random() * maxInt);
 

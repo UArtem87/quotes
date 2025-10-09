@@ -15,8 +15,8 @@ const addFavoriteCard = (quotes, index, body, container) => {
     const favoriteCard = document.createElement('div');
     favoriteCard.classList.add('favorite-card');
     const { text, author } = quotes[index];
-    favoriteCard.innerHTML = `<em>"${text}"</em><br>(${author})`;
-    favoriteCard.setAttribute('data-id', index);
+    favoriteCard.innerHTML = `<em>"${text}"</em><br>(${author})<span class="favorite-star" data-id="${index}"></span>`;
+
     if (body.classList.contains('clicked')) {
       favoriteCard.classList.add('clicked');
     }
@@ -25,16 +25,15 @@ const addFavoriteCard = (quotes, index, body, container) => {
 };
 
 //  Видаляємо карточку з обраних
-const removeFavoriteCard = (quotes, index) => {
-  if (quotes[index].isFavorite === false) {
-    const favoriteCards = document.querySelectorAll('.favorite-card');
-    favoriteCards.forEach((card) => {
-      const cardId = card.getAttribute('data-id');
-      if (+cardId === index) {
-        card.remove();
-      }
-    });
-  }
+const hideFavoriteCard = (index) => {
+  const favoriteCards = document.querySelectorAll('.favorite-card');
+  favoriteCards.forEach((card) => {
+    const star = card.querySelector('.favorite-star');
+    const starId = star.getAttribute('data-id');
+    if (+starId === index) {
+      card.remove();
+    }
+  });
 };
 
 //  Вибір картинки
@@ -45,4 +44,4 @@ const toggleFavoriteImage = (quote, btn) => {
   btn.classList.add(classToAdd);
 };
 
-export { addFavoriteCard, removeFavoriteCard, toggleFavoriteImage, showQuote };
+export { addFavoriteCard, hideFavoriteCard, toggleFavoriteImage, showQuote };
