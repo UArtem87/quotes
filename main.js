@@ -6,6 +6,7 @@ import {
   showQuote,
 } from './src/handlers.js';
 import { generateRandomIndex } from './src/utils.js';
+import { saveState, loadState } from './src/storage.js';
 
 // #region Elements
 const body = document.body;
@@ -36,11 +37,20 @@ theme.addEventListener('click', () => {
 
 let currentIndex;
 
+window.addEventListener('load', () => loadState(quoteRan, toggleFavoriteBtn));
+
 //  Генерація цитати
 function generateRandomQuote() {
   currentIndex = generateRandomIndex(quotes.length);
-  const currentQuote = quotes[currentIndex];
-  showQuote(currentQuote, quoteRan, toggleFavoriteBtn);
+  const quote = quotes[currentIndex];
+  // console.log(quote);
+  showQuote(quote, quoteRan, toggleFavoriteBtn);
+
+  const localQuote = {
+    quote: quotes[currentIndex],
+    id: currentIndex,
+  };
+  saveState(localQuote);
 }
 
 btn.addEventListener('click', generateRandomQuote);
@@ -57,6 +67,7 @@ const toggleFavorite = (index) => {
 
 toggleFavoriteBtn.addEventListener('click', () => toggleFavorite(currentIndex));
 
+//  Видалення із favorite зірочкою на картці
 favoriteContainer.addEventListener('click', (event) => {
   const starElement = event.target.closest('.favorite-star');
   if (starElement) {

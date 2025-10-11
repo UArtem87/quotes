@@ -3,9 +3,7 @@ const generateRandomIndex = (maxInt) => Math.floor(Math.random() * maxInt);
 
 //  Присвоєння властивості isFavorite
 function quoteIsFavorite(currentQuote) {
-  if (currentQuote.isFavorite === undefined) {
-    currentQuote.isFavorite = false;
-  }
+  currentQuote.isFavorite = false;
 }
 
 //  Відображення зірочки
