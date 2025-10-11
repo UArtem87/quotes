@@ -4,9 +4,10 @@ import {
   hideFavoriteCard,
   toggleFavoriteImage,
   showQuote,
+  localFavoriteQuotes,
 } from './src/handlers.js';
 import { generateRandomIndex } from './src/utils.js';
-import { saveState, loadState } from './src/storage.js';
+import { saveState, loadState, localId } from './src/storage.js';
 
 // #region Elements
 const body = document.body;
@@ -36,33 +37,35 @@ theme.addEventListener('click', () => {
 // #endregion
 
 let currentIndex;
-
-window.addEventListener('load', () => loadState(quoteRan, toggleFavoriteBtn));
+const elements = { body, quoteRan, toggleFavoriteBtn, favoriteContainer };
+window.addEventListener('load', () => {
+  loadState(quotes, elements);
+});
 
 //  Генерація цитати
 function generateRandomQuote() {
   currentIndex = generateRandomIndex(quotes.length);
   const quote = quotes[currentIndex];
-  // console.log(quote);
   showQuote(quote, quoteRan, toggleFavoriteBtn);
 
   const localQuote = {
     quote: quotes[currentIndex],
     id: currentIndex,
   };
-  saveState(localQuote);
+  saveState(localQuote, localFavoriteQuotes);
 }
 
 btn.addEventListener('click', generateRandomQuote);
 
 //  Робимо цитату isFavorite
-const toggleFavorite = (index) => {
+const toggleFavorite = (index = localId) => {
   const currentQuote = quotes[index];
+
   currentQuote.isFavorite = currentQuote.isFavorite ? false : true;
   toggleFavoriteImage(currentQuote, toggleFavoriteBtn);
   currentQuote.isFavorite
     ? addFavoriteCard(quotes, index, body, favoriteContainer)
-    : hideFavoriteCard(index);
+    : hideFavoriteCard(quotes, index);
 };
 
 toggleFavoriteBtn.addEventListener('click', () => toggleFavorite(currentIndex));

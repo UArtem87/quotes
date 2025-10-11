@@ -1,11 +1,9 @@
+import { saveState } from './storage.js';
 import { showStar, quoteIsFavorite } from './utils.js';
-import { loadState } from './storage.js';
 
-let localFavoriteQuotes = []; //Збираємо улюблені цитати
-let quoteIsFav;
 //  Відображення цитати
 const showQuote = (quote, quoteRan, btn) => {
-  console.log(quote);
+  // console.log(quote);
   if (quote.isFavorite === undefined) {
     quoteIsFavorite(quote);
   }
@@ -16,6 +14,8 @@ const showQuote = (quote, quoteRan, btn) => {
   showStar(btn);
 };
 
+let localFavoriteQuotes = []; //Збираємо улюблені цитати
+
 //  Додавання карточки з обраною цитатою
 const addFavoriteCard = (quotes, index, body, container) => {
   if (quotes[index].isFavorite === true) {
@@ -24,8 +24,10 @@ const addFavoriteCard = (quotes, index, body, container) => {
     const { text, author } = quotes[index];
     favoriteCard.innerHTML = `<em>"${text}"</em><br>(${author})<span class="favorite-star" data-id="${index}"></span>`;
 
-    const localCurrentQuote = { ...quotes[index], id: index };
+    const quote = { ...quotes[index] };
+    const localCurrentQuote = { quote, id: index };
     localFavoriteQuotes.push(localCurrentQuote);
+    saveState(localCurrentQuote, localFavoriteQuotes);
 
     if (body.classList.contains('clicked')) {
       favoriteCard.classList.add('clicked');
@@ -34,7 +36,7 @@ const addFavoriteCard = (quotes, index, body, container) => {
   }
 };
 //  Видаляємо карточку з обраних
-const hideFavoriteCard = (index) => {
+const hideFavoriteCard = (quotes, index) => {
   const favoriteCards = document.querySelectorAll('.favorite-card');
   favoriteCards.forEach((card) => {
     const star = card.querySelector('.favorite-star');
@@ -46,6 +48,11 @@ const hideFavoriteCard = (index) => {
   localFavoriteQuotes = localFavoriteQuotes.filter(
     (quote) => quote.id !== index
   );
+  const localQuote = {
+    quote: quotes[index],
+    id: index,
+  };
+  saveState(localQuote, localFavoriteQuotes);
 };
 
 //  Вибір картинки
@@ -63,5 +70,4 @@ export {
   toggleFavoriteImage,
   showQuote,
   localFavoriteQuotes,
-  quoteIsFav,
 };

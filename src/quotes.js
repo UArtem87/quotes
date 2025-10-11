@@ -1,4 +1,4 @@
-const texts = [
+const quotes = [
   {
     author: 'Альберт Айнштайн',
     text: 'Прагніть не до успіху, а до цінностей, які він дає',
@@ -41,4 +41,4 @@ const texts = [
   },
 ];
 
-export default texts;
+export default quotes;
